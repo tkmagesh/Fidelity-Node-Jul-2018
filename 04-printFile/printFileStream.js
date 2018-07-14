@@ -2,7 +2,7 @@ var fs = require('fs');
 
 var stream = fs.createReadStream('sample.txt', {encoding :'utf8'});
 
-stream.on('open', function(){
+/*stream.on('open', function(){
 	console.log('file opened for reading');
 });
 stream.on('data', function(chunk){
@@ -18,4 +18,10 @@ stream.on('close', function(){
 
 stream.on('error', function(err){
 	console.log('something went wrong ', err);
+});*/
+
+stream.pipe(process.stdout);
+
+stream.on('close', function(){
+	console.log('file closed');
 });
