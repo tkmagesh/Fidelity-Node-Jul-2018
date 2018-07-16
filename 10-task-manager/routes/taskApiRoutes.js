@@ -6,18 +6,19 @@ var taskService = require('../services/taskService');
 
 router.get('/', function(req, res, next) {
 	var taskList = taskService.getAll();
-	var viewData = { tasks : taskList };
-  	res.render('tasks/index', viewData);
+	res.json(taskList);
 });
 
-router.get('/add', function(req, res, next){
-	res.render('tasks/add');
-});
 
-router.post('/add', function(req, res, next){
+
+router.post('/', function(req, res, next){
 	var newTaskName = req.body.newTaskName;
-	taskService.createNew(newTaskName);
-	res.redirect('/tasks');
+	var newTask = taskService.createNew(newTaskName);
+	res.status(201).json(newTask);
 });
 
+router.delete('/:id', function(req, res, next){
+	taskService.remove(parseInt(req.params.id));
+	res.status(200).json({});
+})
 module.exports = router;
