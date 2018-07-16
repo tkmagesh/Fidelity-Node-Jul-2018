@@ -1,9 +1,10 @@
 var querystring = require('querystring'),
 	calculator = require('./calculator');
-	
+
 module.exports = function(req, res){
 	var resourceName = req.urlObj.pathname;
 	if (resourceName === '/calculator' && req.method === 'GET'){
+		console.log('[@serveCalculator] serving calculator[get] request');
 		var reqData = querystring.parse(req.urlObj.query);
 		var op = reqData.op,
 			n1 = parseInt(reqData.n1, 10),

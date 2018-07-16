@@ -13,7 +13,13 @@ module.exports = function(req, res){
 
 	if (isStatic(resourceFullName) && fs.existsSync(resourceFullName)){
 		var stream = fs.createReadStream(resourceFullName);
-		stream.pipe(res);
-		return;
+		stream.on('data', function(chunk){
+			console.log('[@serveStatic] serving a chunk of file');
+			res.write(chunk);
+		});
+		stream.on('end', function(){
+			console.log('[@serveStatic] completed serving the file');
+			res.end();
+		});
 	} 
 }
