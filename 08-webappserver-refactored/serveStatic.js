@@ -7,14 +7,16 @@ function isStatic(resource){
 	return staticExtns.indexOf(path.extname(resource)) !== -1;
 }
 
-module.exports = function(req, res, next){
-	var resourceName = req.urlObj.pathname,
-		resourceFullName = path.join(__dirname, resourceName);
+module.exports = function(staticResPath){
+	return function(req, res, next){
+		var resourceName = req.urlObj.pathname,
+			resourceFullName = path.join(staticResPath, resourceName);
 
-	if (isStatic(resourceFullName) && fs.existsSync(resourceFullName)){
-		var stream = fs.createReadStream(resourceFullName);
-		stream.pipe(res);
-	} else {
-		next();
+		if (isStatic(resourceFullName) && fs.existsSync(resourceFullName)){
+			var stream = fs.createReadStream(resourceFullName);
+			stream.pipe(res);
+		} else {
+			next();
+		}
 	}
 }
