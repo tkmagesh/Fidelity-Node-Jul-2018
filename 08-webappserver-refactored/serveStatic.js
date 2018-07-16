@@ -7,19 +7,14 @@ function isStatic(resource){
 	return staticExtns.indexOf(path.extname(resource)) !== -1;
 }
 
-module.exports = function(req, res){
+module.exports = function(req, res, next){
 	var resourceName = req.urlObj.pathname,
 		resourceFullName = path.join(__dirname, resourceName);
 
 	if (isStatic(resourceFullName) && fs.existsSync(resourceFullName)){
 		var stream = fs.createReadStream(resourceFullName);
-		stream.on('data', function(chunk){
-			console.log('[@serveStatic] serving a chunk of file');
-			res.write(chunk);
-		});
-		stream.on('end', function(){
-			console.log('[@serveStatic] completed serving the file');
-			res.end();
-		});
-	} 
+		stream.pipe(res);
+	} else {
+		next();
+	}
 }
