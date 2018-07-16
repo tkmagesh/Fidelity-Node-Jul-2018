@@ -10,6 +10,7 @@ var staticExtns = ['.html', '.css','.js', '.jpg', '.png', '.ico', '.xml','.json'
 function isStatic(resource){
 	return staticExtns.indexOf(path.extname(resource)) !== -1;
 }
+
 var server = http.createServer(function(req /* readableStream*/, res /* writableStream */){
 	var urlObj = url.parse(req.url),
 		resourceName = urlObj.pathname,
