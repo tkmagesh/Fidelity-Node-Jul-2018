@@ -2,14 +2,10 @@ var express = require('express');
 var router = express.Router();
 var taskService = require('../services/taskService');
 
-
-
 router.get('/', function(req, res, next) {
 	var taskList = taskService.getAll();
 	res.json(taskList);
 });
-
-
 
 router.post('/', function(req, res, next){
 	var newTaskName = req.body.newTaskName;
